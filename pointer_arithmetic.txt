@@ -1,0 +1,111 @@
+using namespace std;
+#include <iostream>
+#include <vector>
+
+//assumption : array[0]
+//array[last]
+
+void check_increments(char* p1, int* p2)
+{
+	cout << int(p1++) << endl;
+	cout << int(p1) <<endl;
+	cout << p2++ << endl;
+	cout << p2 << endl;
+}
+int get_subarray(int* add1, int* add2, int arr1, int arr2)
+{
+	int index_found = 0;
+	int next_index = 0;
+	bool match_found = false;
+	char ch1;
+	int inte1;
+
+	check_increments(&ch1, &inte1);
+	for (int index = arr1; index > 0; index--)
+	{
+		if (*(add1 - (arr1-index)) == *add2)
+		{
+			index_found = index;
+			match_found = true;
+			for (int inner_loop = 0; (inner_loop < arr2) && ( (arr1 - index_found) - inner_loop) >= 0; inner_loop++)
+			{
+				if (*(add1 - (arr1 -index_found) - inner_loop) != *(add2 - inner_loop))
+				{
+					match_found = false;
+					break;
+				}
+			}
+			if (match_found == true)
+			{
+				break;
+			}
+		}
+	}
+	if (match_found) {
+		cout << index_found << endl;
+		return index_found;
+		//return (add1 - (arr1  - index_found -1) - arr2 );
+	}
+	else
+		return 0;
+}
+
+void print_by_array(int array1[10])
+{
+	for (int index = 0; index < 10; index++)
+	{
+		cout << array1[index] << endl;
+	}
+}
+
+int* ptr;//[1 adress of int]
+int var1 = 500;
+int var2 = 600;
+int var3 = 700;
+int var4 = 800;
+int var5 = 900;
+int* some_arr[5] = {&var1,&var2, &var3, &var4, &var5 };//[5 address of int ]
+
+int main()
+{
+
+	int** p11 = some_arr;
+	for(int index =0; index < 5 ; index++)
+	{
+		cout << **p11 << endl;
+		p11++;
+	}		
+
+
+
+
+
+	int arr1, array1[100];
+	int arr2, array2[100];
+	cout << "enter size of array1" << endl;
+	cin >> arr1;
+	cout << "feed in array 1 data " << endl;
+	int temp = arr1;
+	while (temp != 0)
+	{
+		cin >> array1[arr1 - temp];
+		temp--;
+	}
+	cout << "enter size of array2" << endl;
+	cin >> arr2;
+	cout << "feed in array 2 data " << endl;
+	temp = arr2;
+	while (temp != 0)
+	{
+		cin >> array2[arr2 - temp];
+		temp--;
+	}
+
+	int address = get_subarray(&array1[arr1 - 1], &array2[arr2 - 1], arr1, arr2);
+	print_by_array(&array1[address - 1]);
+	cout << "************************" << endl;
+	for (int sub_array = 0; (sub_array < arr2) && (address != 0); sub_array++)
+	{
+		//cout << *(address + sub_array) << endl;
+	}
+}
